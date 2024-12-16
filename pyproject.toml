@@ -1,0 +1,35 @@
+[project]
+name = "test"
+version = "0.1.0"
+description = "A CLI tool for exploring github repositories and downloading files and folders."
+authors = [
+    {name = "Robert Dusk", email = "Robert@dusk.monster"},
+]
+maintainers = [
+    {name = "Robert Dusk", email = "Robert@dusk.monster"},
+]
+keywords = ["github", "cli", "explorer", "downloader"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development",
+    "Topic :: Utilities"
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "art>=6.4",
+    "makefilename>=0.1.0",
+    "pygithub>=2.5.0",
+    "simple-term-menu>=1.6.6",
+    "termcolor>=2.5.0",
+]
+
+[project.urls]
+homepage = "https://github.com/RobertDusk/gitloader"
