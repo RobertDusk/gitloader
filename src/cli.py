@@ -78,9 +78,17 @@ def choose_repo_menu() -> None:
 
 def choose_file_menu() -> None:
     g = githubutils.get_github()
-    user = g.get_user(session.session["user"])
-    repo = user.get_repo(session.session["repo"])
+    repo = session.session["repo"]
     contents = repo.get_contents("")
+    file_paths = [file.path for file in contents]
+    extra_options = ["<change repo>"]
+    options = extra_options + file_paths
+    terminal_menu = TerminalMenu(options, title=f"Select a file from {session.session["repo"]}")
+    menu_entry_index = terminal_menu.show()
+    if menu_entry_index == 0:
+        if "file_path":
+            # HEEEEREEEEE
+
     while contents:
         file_contents = [content for content in contents if content.type == "file"]
         dir_contents = [content for content in contents if content.type == "dir"]
