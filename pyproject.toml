@@ -35,3 +35,8 @@ dependencies = [
 
 [project.urls]
 homepage = "https://github.com/RobertDusk/gitloader"
+
+[dependency-groups]
+dev = [
+    "nuitka>=2.5.8",
+]

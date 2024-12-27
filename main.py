@@ -1,11 +1,8 @@
-from pathlib import Path
-import pyperclip
 import click
 from rich import print
 import logging
-from simple_term_menu import TerminalMenu
 
-from src import cli, githubutils, config, session
+from src import cli, githubutils, config
 
 logging.basicConfig(level=logging.INFO)
 
@@ -20,27 +17,6 @@ def main(ctx: click.Context):
         next_function = menu_function()
         menu_function = next_function
         
-    '''
-    # print(f"You have selected {options[menu_entry_index]
-    content = selected_repo.get_contents("")
-    terminal_menu = TerminalMenu(["<back>"] + [c.path for c in content])
-    menu_entry_index = terminal_menu.show()
-    selected_content = content[menu_entry_index]
-    print(f"You have selected {selected_content.path}!")
-    options = ["<back>", "download", "copy to clipboard"]
-    terminal_menu = TerminalMenu(options)
-    menu_entry_index = terminal_menu.show()
-    selected_option = options[menu_entry_index]
-    print(f"You have selected {selected_option}!")
-    if selected_option == "download":
-        filename = Path(selected_content.path).absolute().name
-        with open(filename, "wb") as f:
-            f.write(selected_content.decoded_content)
-            print(f"Saved to {filename}")
-        
-    elif selected_option == "copy to clipboard":
-        pyperclip.copy(selected_content.decoded_content)
-    '''
 
 @click.command()
 def logout():
