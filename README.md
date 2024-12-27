@@ -4,6 +4,7 @@ A CLI tool for exploring github repositories and downloading files and folders.
 
 ## TODO
 
+- implement viewing file
 - build cross-platform using `gldr` as base command
 - set default username and repo
 - save session to continue next time

@@ -3,6 +3,7 @@ from art import text2art
 from rich import print
 from github import Github
 import logging
+import pyperclip
 
 
 from src import githubutils, session
@@ -72,23 +73,57 @@ def choose_repo_menu() -> None:
         if "repo" in session.session:
             del session.session["repo"]
         return set_user_menu
-    session.session["repo"] = repos[menu_entry_index]
+    session.session["repo"] = repos[menu_entry_index - len(extra_options)]
+    session.session["dir_path"] = ""
     return choose_file_menu
 
 
 def choose_file_menu() -> None:
     g = githubutils.get_github()
     repo = session.session["repo"]
-    contents = repo.get_contents("")
-    file_paths = [file.path for file in contents]
-    extra_options = ["<change repo>"]
+    contents = repo.get_contents(session.session["dir_path"])
+    file_paths = [file.path.split("/")[-1] for file in contents]
+    if session.session["dir_path"] == "":
+        extra_options = ["<change repo>"]
+    else:
+        extra_options = ["<go up>"]
     options = extra_options + file_paths
-    terminal_menu = TerminalMenu(options, title=f"Select a file from {session.session["repo"]}")
+    path_string = f"{session.session["user"]}/{repo.name}"
+    if session.session["dir_path"] != "":
+        path_string += f"/{session.session["dir_path"]}"
+    terminal_menu = TerminalMenu(options, title=f"Select a file from {path_string}")
+    menu_entry_index = terminal_menu.show()
+    chosen_option = options[menu_entry_index]
+    if chosen_option == "<go up>":
+        session.session["dir_path"] = "/".join(session.session["dir_path"].split("/")[:-1])
+        return choose_file_menu
+    if chosen_option == "<change repo>":
+        if "dir_path" in session.session:
+            del session.session["dir_path"]
+        return choose_repo_menu
+    file = contents[menu_entry_index - len(extra_options)]
+    contents = repo.get_dir_contents(file.path)
+    if type(contents) is list:
+        session.session["dir_path"] = file.path
+        return choose_file_menu
+    else:
+        session.session["file"] = file
+        return file_options_menu
+
+    
+def file_options_menu() -> None:
+    file = session.session["file"]
+    options = ["<change file>", "View file", "Download file", "Copy file"]
+    terminal_menu = TerminalMenu(options, title=f"Select an option for {session.session["user"]}/{session.session["repo"].name}/{file.path}")
     menu_entry_index = terminal_menu.show()
     if menu_entry_index == 0:
-        if "file_path":
-            # HEEEEREEEEE
-
-    while contents:
-        file_contents = [content for content in contents if content.type == "file"]
-        dir_contents = [content for content in contents if content.type == "dir"]
+        del session.session["file"]
+        return choose_file_menu
+    elif menu_entry_index == 1:
+        print(file.decoded_content.decode())
+    elif menu_entry_index == 2:
+        with open(file.path, "wb") as f:
+            f.write(file.decoded_content)
+    elif menu_entry_index == 3:
+        pyperclip.copy(file.decoded_content.decode())
+    return file_options_menu

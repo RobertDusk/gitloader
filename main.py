@@ -7,7 +7,7 @@ from simple_term_menu import TerminalMenu
 
 from src import cli, githubutils, config, session
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 
 @click.group(invoke_without_command=True)
