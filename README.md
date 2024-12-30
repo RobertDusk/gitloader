@@ -11,8 +11,13 @@ A CLI tool for exploring github repositories and downloading files and folders.
 | `gldr logout` | Logout from github |
 | `gldr` | Start the application |
 
+## Dev Guide
+
+`uv run nuitka main.py --standalone --onefile --output-dir=dist` to build the executable
+
 ## TODO
 
+- distribute executable through package manager
 - implement viewing file (see readme simple-term-menu https://github.com/IngoMeyer441/simple-term-menu?tab=readme-ov-file)
 - implement way to download entire folder or repo
 - implement way to exit

@@ -1,0 +1,1 @@
+uv run nuitka gldr.py --standalone --onefile --output-dir=dist
